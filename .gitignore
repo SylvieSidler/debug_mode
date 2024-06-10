@@ -1,0 +1,9 @@
+*.o
+GAME/.vscode/
+GAME/bin/tests/*
+GAME/template event.c
+GAME/bin/tests/test_window
+notes_dev_Olivia.txt
+GAME/template event.txt
+GAME/bin/tests/*
+GAME/.vscode/*
