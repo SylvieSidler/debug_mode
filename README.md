@@ -44,7 +44,7 @@ Vous pouvez maintenant compiler et lancer le jeu avec `make run`.
 Pour lancer les tests unitaire, lancez `make test`, si des erreurs se produisent dans les tests, elles s'afficheront dans le terminal. 
 
 ### ! Si vous utilisez un Mac 
-Voici votre ordre de mission "side_quest" : 
+Voici votre ordre de mission `hidden_quest` : \
 Dans le fichier `GAME/src/main.c`, il faut modifier à la première ligne la définition de `FLAGS_RENDERER` par le flag en commentaire.
 
 ```C
@@ -68,11 +68,12 @@ Le tutoriel peut etre appelé à n'importe quel instant pour vous aider dans vot
 
 ## About
 
-**Membres du groupe :**
-- Olivia AING <<olivia.aing@telecomnancy.eu>> 
-- Chloé BONINN <<chloe.boninn@telecomnancy.eu>>
-- Lise MANIÈRE <<lise.maniere@telecomnancy.eu>>
-- Sylvie SIDLER <<sylvie.sidler@telecomnancy.eu>>
-- Zoé VERNICOS <<zoe.vernicos@telecomnancy.eu>>
+#### Membres du groupe 
+- Olivia AING : <olivia.aing@telecomnancy.eu>
+- Chloé BONINN : <chloe.boninn@telecomnancy.eu>
+- Lise MANIÈRE : <lise.maniere@telecomnancy.eu>
+- Sylvie SIDLER : <sylvie.sidler@telecomnancy.eu>
+- Zoé VERNICOS : <zoe.vernicos@telecomnancy.eu>
 
-
+**Cheffe de Projet** : Olivia Aing\
+**Mainteneuse du projet** : Sylvie Sidler
