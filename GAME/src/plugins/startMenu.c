@@ -3,14 +3,6 @@
 
 //////////////////////////////////////////////////////////// Font, Image, BG
 
-// TTF_Font* setFont(void) {
-//     TTF_Font* font = TTF_OpenFont("arial.ttf", 24); 
-//     if (!font) {
-//         printf("Failed to load font: %s\n", TTF_GetError());
-//     }
-//     return font ;
-// }
-
 SDL_Texture* loadImage(const char path[], SDL_Renderer *renderer) {
     SDL_Surface* tmp = NULL; 
     SDL_Texture* texture = NULL;
@@ -22,7 +14,7 @@ SDL_Texture* loadImage(const char path[], SDL_Renderer *renderer) {
     texture = SDL_CreateTextureFromSurface(renderer, tmp);
     SDL_FreeSurface(tmp);
     if(NULL == texture) {
-        fprintf(stderr, "Erreur SDL_CreateTextureFromSurface : %s\n", SDL_GetError());
+        fprintf(stderr, "Error SDL_CreateTextureFromSurface from startMenu: %s\n", SDL_GetError());
         return NULL;
     }
     return texture;
@@ -31,15 +23,15 @@ SDL_Texture* loadImage(const char path[], SDL_Renderer *renderer) {
 void renderStartBG(SDL_Renderer *renderer, SDL_Texture* TextureBG, int step) {
     SDL_RenderClear(renderer) ; 
     int BGfullW, BGfullH ;
-    if (SDL_QueryTexture(TextureBG, NULL, NULL, &BGfullW, &BGfullH)) {
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Error in query texture: %s\n", SDL_GetError());
+    if (SDL_QueryTexture(TextureBG, NULL, NULL, &BGfullW, &BGfullH) != 0) {
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Error in query texture from startMenu: %s\n", SDL_GetError());
         exit(-1);
     }
     int BGw = BGfullW/2 ;
     int BGh = BGfullH/3 ;
     SDL_Rect BGrect = {.x = step%2*BGw, .y = (step/2)*BGh, .w = BGw, .h = BGh}; // printf("x = %d ; y = %d \n", BGrect.x, BGrect.y);
     if (SDL_RenderCopy(renderer, TextureBG, &BGrect, NULL)) {
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Error in render copy: %s\n", SDL_GetError());
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Error in render copy from startMenu: %s\n", SDL_GetError());
     }
 }
 
@@ -139,7 +131,11 @@ int startMenu(SDL_Window** window, SDL_Renderer** renderer, Save* sauvegarde) { 
 
     int w, h; 
     SDL_GetWindowSize(*window, &w, &h); // changes Width & Height accordingly to the window size
+    SDL_ClearError() ;
     SDL_Texture* TextureBG = loadImage("./GAME/img/backgrounds/startBackgrounds.png", *renderer) ;
+    if (TextureBG == NULL)
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Error in textureBG initialisation from startMenu: %s\n", SDL_GetError());
+
     defRect(&Rect1, &Rect2, &optionsMenu, &back, &save0, &save1, w, h) ; // definit les positions & tailles des 2 rectangles
 
     music = loadBGmusic("main_menu") ; // si pb -> quitStart = 1 & var music modifiée
@@ -152,19 +148,18 @@ int startMenu(SDL_Window** window, SDL_Renderer** renderer, Save* sauvegarde) { 
         SDL_RenderPresent(*renderer); 
         if (startStep==3 || startStep==2) { // nouveau jeu ou sauvegarde -> sort du menu pour lancer le jeu
             SDL_Delay(700); // 0.7 sec
+            Mix_FadeOutMusic(700) ;
             quitStart = 1;
             break;
         }
         while (SDL_PollEvent(&event)) {
             switch (event.type) {
                 case SDL_QUIT :
-                    // printf("quits idk how\n");
                     quitStart = 1;
                     quitGame = 1 ;
                     break;
                 case SDL_KEYDOWN :
                     if (event.key.keysym.sym == SDLK_ESCAPE) {
-                        // printf("quits by ESC key\n");
                         quitStart = 1;
                         quitGame = 1 ;
                     }
@@ -179,29 +174,7 @@ int startMenu(SDL_Window** window, SDL_Renderer** renderer, Save* sauvegarde) { 
     }
     if(NULL != TextureBG)
         SDL_DestroyTexture(TextureBG);
-    Mix_HaltMusic() ;
     return quitGame ;
     // return 0;   
-}
-
-
-//////////////////////////////////////////////////////////// Quit
-
-
-int Quit (SDL_Window* window, SDL_Renderer* renderer, SDL_Texture* texture, Mix_Music* music) {
-    if(NULL != window)
-        SDL_DestroyWindow(window) ;
-    if(NULL != renderer) 
-        SDL_DestroyRenderer(renderer);
-    if (texture!=NULL)
-        SDL_DestroyTexture(texture);
-    if(NULL != music) 
-        Mix_FreeMusic(music);
-    
-    SDL_Quit() ;
-    IMG_Quit() ;
-    Mix_CloseAudio() ; // quit SDL_mixer 
-
-    return 0 ;
 }
 

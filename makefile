@@ -1,5 +1,5 @@
 TARGET = GAME/bin/game
-SRCS = $(wildcard GAME/src/plugins/*.c) GAME/src/main.c
+SRCS = $(wildcard GAME/src/plugins/*.c) GAME/src/main.c GAME/src/define.c
 
 OBJS = $(SRCS:.c=.o)
 

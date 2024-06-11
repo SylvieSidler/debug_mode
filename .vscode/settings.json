@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "story_event.h": "c",
+        "sprite.h": "c"
+    }
+}

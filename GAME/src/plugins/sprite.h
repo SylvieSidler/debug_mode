@@ -2,19 +2,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_mixer.h>
-#include <SDL2/SDL2_rotozoom.h>
-#include <SDL2/SDL2_imageFilter.h>
+// #include <SDL2/SDL_image.h>
+// #include <SDL2/SDL_mixer.h>
+// #include <SDL2/SDL2_rotozoom.h>
+// #include <SDL2/SDL2_imageFilter.h>
 // #include <SDL2/SDL2_gfxPrimitives_font.h>
-#include <SDL2/SDL2_gfxPrimitives.h>
-#include <SDL2/SDL2_framerate.h>
-#include <SDL2/SDL_ttf.h>
-#include <SDL2/SDL_surface.h>
-
-#define larg_fenetre 967
-#define haut_fenetre 544
-#define vitesse 299
+// #include <SDL2/SDL2_gfxPrimitives.h>
+// #include <SDL2/SDL2_framerate.h>
+// #include <SDL2/SDL_ttf.h>
+// #include <SDL2/SDL_surface.h>
 
 typedef struct _direction{
     bool up;

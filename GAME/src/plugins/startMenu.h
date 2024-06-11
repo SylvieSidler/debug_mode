@@ -4,12 +4,10 @@
 #include <SDL2/SDL_mixer.h>
 #include "sounds.h"
 #include "save.h"
+#include "../define.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-
-// int Init (SDL_Window** window, SDL_Renderer** renderer) ;
-int Quit (SDL_Window* window, SDL_Renderer* renderer, SDL_Texture* texture, Mix_Music* music) ;
 
 SDL_Texture* loadImage(const char path[], SDL_Renderer *renderer) ;
 void renderStartBG(SDL_Renderer *renderer, SDL_Texture* TextureBG, int num) ;

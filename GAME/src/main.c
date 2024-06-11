@@ -1,5 +1,3 @@
-#define FLAGS_RENDERER  SDL_RENDERER_SOFTWARE    // SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC 
-
 /*Ajout des bibliothèques*/
 #include "./plugins/sprite.h"
 #include "./plugins/startMenu.h"
@@ -10,139 +8,29 @@
 #include "./plugins/astar.h"
 #include "./plugins/fileprio.h"
 #include "./plugins/pouvoir_carte.h"
-#include <stdlib.h>
-#include <stdio.h>
+#include "./define.h"
 
-#define FPS 60
-#define FRAME_DELAY 1000 / FPS
 
 int main(void) {
     int status = EXIT_FAILURE ;
     SDL_Window* pWindow = NULL ;
     SDL_Renderer* pRenderer = NULL ;
-    SDL_Event events ;
+    // SDL_Surface *surfaceSprite =NULL;
     SDL_Texture* texture = NULL ;
-    Mix_Music* music = NULL ;
-
-    if(0 != SDL_Init(SDL_INIT_VIDEO)) {
-        fprintf(stderr, "Error SDL_Init : %s\n", SDL_GetError()) ;
-        Quit(pWindow, pRenderer, texture, music) ;
-        return -1 ;
-    }
-
-    int flags = IMG_INIT_JPG|IMG_INIT_PNG ;
-    int initted = IMG_Init(flags) ;
-    if ((initted&flags) != flags) {
-        fprintf(stderr, "Error IMG_Init : %s\n", IMG_GetError()) ;
-        Quit(pWindow, pRenderer, texture, music) ;
-        return -1 ;
-    }
-
-    pWindow = SDL_CreateWindow("\\debug_mode",
-                                            SDL_WINDOWPOS_CENTERED,
-                                            SDL_WINDOWPOS_CENTERED,
-                                            larg_fenetre,
-                                            haut_fenetre,
-                                            0 );
-    if (pWindow==NULL){
-        printf("error in creation of SDL window : %s\n", SDL_GetError());
-        SDL_Quit();
-        return -1;
-    }
-    Uint32 flags2 = FLAGS_RENDERER ;
-    pRenderer = SDL_CreateRenderer(pWindow, -1, flags2);
-
-    if (pRenderer==NULL){
-        printf("error in creation of SDL renderer : %s\n", SDL_GetError());
-        destroy(pWindow,NULL,NULL);
-        return -1;
-    }
-    if (TTF_Init()==-1)
-    {
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "[DEBUG] TTF_Init > %s", TTF_GetError());
-        SDL_DestroyRenderer(pRenderer);
-        SDL_DestroyWindow(pWindow);
-        TTF_Quit();
-        IMG_Quit();    
-        SDL_Quit(); 
-        return EXIT_FAILURE;
-    }
 
     TTF_Font* PTPixel = NULL;
-    PTPixel = TTF_OpenFont("GAME/img/assets/Puzzle-Tale-Pixel-Regular.ttf",20);
-    TTF_SetFontStyle(PTPixel, TTF_STYLE_NORMAL);
-    TTF_SetFontHinting(PTPixel, TTF_HINTING_NORMAL);
-
-    if(PTPixel==NULL)
-    {
-        printf("Erreur de création de la police : %s", TTF_GetError());
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "[DEBUG] TTF_Init > %s", TTF_GetError());
-        SDL_DestroyRenderer(pRenderer);
-        SDL_DestroyWindow(pWindow);
-        TTF_CloseFont(PTPixel);
-        TTF_Quit();
-        IMG_Quit();    
-        SDL_Quit(); 
-        return EXIT_FAILURE;
-    }
-
     TTF_Font* GrandPixel = NULL;
-    GrandPixel = TTF_OpenFont("GAME/img/assets/Grand9K-Pixel.ttf",20);
-    TTF_SetFontStyle(GrandPixel, TTF_STYLE_NORMAL);
-    TTF_SetFontHinting(GrandPixel, TTF_HINTING_NORMAL);
 
-    if(GrandPixel==NULL)
-    {
-        printf("Erreur de création de la police : %s", TTF_GetError());
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "[DEBUG] TTF_Init > %s", TTF_GetError());
-        SDL_DestroyRenderer(pRenderer);
-        SDL_DestroyWindow(pWindow);
-        TTF_CloseFont(PTPixel);
-        TTF_CloseFont(GrandPixel);
-        TTF_Quit();
-        IMG_Quit();    
-        SDL_Quit(); 
-        return EXIT_FAILURE;
-    }
-    
-    SDL_Surface *surface =NULL;
-    surface = IMG_Load("././GAME/img/sprites/Kiki_sprite_sheet.png");
-    if (surface==NULL){
-        printf("error in creation of SDL surface : %s\n", SDL_GetError());
-        destroy(pWindow,pRenderer,NULL);
-        return -1;
-    }
+    Mix_Music* music = NULL ;
+    Mix_Chunk* bumpSound = NULL ;
+    Mix_Chunk* resolveSound = NULL ;
 
-    texture = SDL_CreateTextureFromSurface(pRenderer, surface);
-    SDL_FreeSurface(surface);
+    SDL_Event events ;
 
-    if (texture==NULL){
-        printf("error in creation of SDL texture : %s\n", SDL_GetError());
-        destroy(pWindow,pRenderer,NULL);
-        return -1;
+    if (initALL(&pWindow, &pRenderer, &texture, &PTPixel, &GrandPixel, &music, &bumpSound, &resolveSound) != EXIT_SUCCESS ) {
+        quitALL(pWindow, pRenderer, texture, PTPixel, GrandPixel, music, bumpSound, resolveSound) ;
+        return EXIT_FAILURE ;
     }
-
-    Mix_Init(MIX_INIT_OGG) ;
-    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
-        printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
-        Quit(pWindow, pRenderer, texture, music) ;
-        return -1;
-    }
-
-    music = loadBGmusic("overworld") ; 
-    if (music == NULL) {
-        printf("There was a problem for the BGmusic ! SDL_mixer Error: %s\n", Mix_GetError());
-        Quit(pWindow, pRenderer, texture, music) ;
-        return -1;
-    }
-    Mix_Chunk* bumpSound = loadSoundEffect("bump") ;
-    if (bumpSound == NULL)
-        printf("There was a problem with the 'bump' sound effect ! SDL_mixer Error: %s\n", Mix_GetError());
-    
-    Mix_Chunk* resolveSound = loadSoundEffect("resolve") ;
-    if (resolveSound == NULL)
-        printf("There was a problem with the 'resolve' sound effect ! SDL_mixer Error: %s\n", Mix_GetError());
-    
 
     SDL_Rect destRect;
     SDL_QueryTexture(texture, NULL, NULL, &destRect.w, &destRect.h );
@@ -182,7 +70,7 @@ int main(void) {
     // position *src=create_position((int)(Kiki->position_x/LARGEUR_TILE),(int)(Kiki->position_y/HAUTEUR_TILE));
     chemin *chemin_trouve=NULL;
 
-    //initialisation de l'emplacement ppour pouvoir_carte
+    //initialisation de l'emplacement pour pouvoir_carte
     SDL_Rect place_astar_provisoire = {
                             .h = haut_fenetre/2,
                             .w = larg_fenetre/3,
@@ -545,23 +433,18 @@ int main(void) {
 
         SDL_RenderPresent(pRenderer);
 
-        Uint32 frameTime = SDL_GetTicks() - frameStart;
+        Uint32 frameTime = SDL_GetTicks() - frameStart; // gère les fps : kiki va a la mm vitesse peu importe l'ordi
         if (frameTime < FRAME_DELAY) {
             SDL_Delay(FRAME_DELAY - frameTime);
         }
-        // if(test){
-        //     printf("test 5: %d, %d\n", Kiki->position_x, Kiki->position_y);
-        // }
         
     }
     free(dir);
-    // free(dst);
-    // free(src);
+    // free(dst); free(src);
     free_chemin(chemin_trouve);
     free_cartes(cartes);
     free_cartes_bis(cartesbis);
     saveGame(sauvegarde) ;
-    Mix_FreeChunk(bumpSound);
-    status = Quit(pWindow, pRenderer, texture, music) ;
+    status = quitALL (pWindow, pRenderer, texture, PTPixel, GrandPixel, music, bumpSound, resolveSound) ;
     return status ; 
 }
