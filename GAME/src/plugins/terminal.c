@@ -163,7 +163,7 @@ int terminal (SDL_Window* gWindow, SDL_Renderer* gRenderer, TTF_Font* GrandPixel
         SDL_Quit(); 
         return EXIT_FAILURE;
     }
-    int a = gScreen->w;
+    // int a = gScreen->w;
     int b = gScreen->h;
 
     open_terminal(story_progress,gWindow,gRenderer, GrandPixel);

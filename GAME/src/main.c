@@ -104,7 +104,7 @@ int main(void) {
     int quit = startMenu(&pWindow, &pRenderer, sauvegarde) ;
     // printf("%d\n", sauvegarde->avancement) ;
     bool load = false ; // définit si une sauvegardde a été chargée dernièrement -> repassée à false immédiatement après 
-    if (sauvegarde->avancement!=0) { // si aucune sauvegarde n'a été chargée : nouveau jeu avec avancement à 1
+    if (sauvegarde->avancement!=0) // si aucune sauvegarde n'a été chargée : nouveau jeu avec avancement à 1
         load = true ;
 
     int vh ; // variable histoire : temporaire pour sauvegarde->avancement
@@ -116,13 +116,15 @@ int main(void) {
 
     while (quit != 1) {         
         Uint32 frameStart = SDL_GetTicks();
-        if (load == true) {
+
+        if (load == true) { // si changement de sauvegarde
             dans_carte = sauvegarde->idCarte ;
             carte = cartes[dans_carte] ;
             Kiki->position_x = sauvegarde->x ;
             Kiki->position_y = sauvegarde->y ;
             load = false ;
         }
+
         while (SDL_PollEvent(&events)) {
             // SDL_Delay(50);
             if (sauvegarde->avancement== 0) { // 1ere cutscene après intro à erreurs SDL
