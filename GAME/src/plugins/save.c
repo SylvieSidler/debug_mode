@@ -2,7 +2,7 @@
 
 // enregistre les variables dans la sauvegarde n°<num> : 0 ou 1
 void saveGame(Save* sauvegarde) {
-    printf("\\save %d\n", sauvegarde->num);
+    // printf("\\save %d\n", sauvegarde->num);
     // récupère le lien vers la sauvegarde dans la variable filename
     char filename[30] = "" ; char* beg = "./GAME/saves/sauvegarde" ; char* end = ".txt" ; 
     char numStr[2] ; snprintf(numStr, sizeof(numStr), "%d", sauvegarde->num);
@@ -29,7 +29,7 @@ bool loadGame(Save* sauvegarde, int num) { // num correspond à la sauvegarde à
     char filename[30] = "" ; char* beg = "./GAME/saves/sauvegarde" ; char* end = ".txt" ; 
     char numStr[2] ; snprintf(numStr, sizeof(numStr), "%d", num);
     strcat(filename, beg) ; strcat(filename, numStr) ; strcat(filename, end) ;
-    printf("loading '%s'...\n", filename);
+    // printf("loading '%s'...\n", filename);
 
     FILE *file = fopen(filename, "r"); // ouvre la sauvegarde en lecture
     if(file == NULL) {

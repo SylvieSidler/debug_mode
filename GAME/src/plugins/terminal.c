@@ -236,7 +236,7 @@ int terminal (SDL_Window* gWindow, SDL_Renderer* gRenderer, TTF_Font* GrandPixel
                             } // fin "\save"
 
                             if ((textinput[0]=='\\' && textinput[1]=='l' && textinput[2]=='0' && textinput[3]=='\0') || (textinput[0]=='\\' && textinput[1]=='l' && textinput[2]=='o' && textinput[3]=='a' && textinput[4]=='d' && textinput[5]=='0' && textinput[6]=='\0')) {
-                                printf("\\load 0\n");
+                                // printf("\\load 0\n");
                                 saveGame(sauvegarde); // sauvegarder avant de changer de sauvegarde
                                 loadGame(sauvegarde, 0);
                                 *load = true ;
@@ -257,7 +257,7 @@ int terminal (SDL_Window* gWindow, SDL_Renderer* gRenderer, TTF_Font* GrandPixel
                                 i=0;
                             } // fin "\load0"
                             if ((textinput[0]=='\\' && textinput[1]=='l' && textinput[2]=='1' && textinput[3]=='\0') || (textinput[0]=='\\' && textinput[1]=='l' && textinput[2]=='o' && textinput[3]=='a' && textinput[4]=='d' && textinput[5]=='1' && textinput[6]=='\0')) {
-                                printf("\\load 1\n");
+                                // printf("\\load 1\n");
                                 saveGame(sauvegarde); // sauvegarder avant de changer de sauvegarde
                                 loadGame(sauvegarde, 1);
                                 *load = true ;
