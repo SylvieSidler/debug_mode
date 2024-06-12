@@ -21,7 +21,7 @@ void affiche_commandes(int variable_histoire, SDL_Window* gWindow, SDL_Renderer*
 int textClear(SDL_Window* gWindow, SDL_Renderer* gRenderer, SDL_Surface *text, SDL_Texture *textTexture, TTF_Font* GrandPixel, 
 char textinput[300], SDL_Color textColor, SDL_Event events, int sp, int b, int w, int h) ;
 
-int terminal (SDL_Window* gWindow, SDL_Renderer* gRenderer, TTF_Font* GrandPixel, Save* sauvegarde,int *debug_mod,int *pouvoir_carte,int *compteur_astar);
+int terminal (SDL_Window* gWindow, SDL_Renderer* gRenderer, TTF_Font* GrandPixel, Save* sauvegarde,int *debug_mod,int *pouvoir_carte,int *compteur_astar, bool* load);
 
 
 #endif

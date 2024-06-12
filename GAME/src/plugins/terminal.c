@@ -135,7 +135,7 @@ char textinput[300], SDL_Color textColor, SDL_Event events, int sp, int b, int w
 
 
 /* fonction à part pour le terminal */
-int terminal (SDL_Window* gWindow, SDL_Renderer* gRenderer, TTF_Font* GrandPixel, Save* sauvegarde,int *debug_mod, int *pouvoir_carte,int *compteur_astar) {
+int terminal (SDL_Window* gWindow, SDL_Renderer* gRenderer, TTF_Font* GrandPixel, Save* sauvegarde,int *debug_mod, int *pouvoir_carte,int *compteur_astar, bool* load) {
 
     SDL_RenderClear(gRenderer) ; 
     SDL_RenderFillRect(gRenderer, NULL);
@@ -210,14 +210,10 @@ int terminal (SDL_Window* gWindow, SDL_Renderer* gRenderer, TTF_Font* GrandPixel
                         break;
 
                         case SDLK_RETURN:
-                            if (textinput[0]=='\\' && textinput[1]=='c' && textinput[2]=='l' && textinput[3]=='o' && textinput[4]=='s' && textinput[5]=='e' && textinput[6]=='\0'){
+                            if ((textinput[0]=='\\' && textinput[1]=='c' && textinput[2]=='\0') || (textinput[0]=='\\' && textinput[1]=='c' && textinput[2]=='l' && textinput[3]=='o' && textinput[4]=='s' && textinput[5]=='e' && textinput[6]=='\0')) {
                                 i=0;
                                 terminal_open = false;
                             } // fin cas "\close" pour fermer le terminal
-                            if (textinput[0]=='\\' && textinput[1]=='c' && textinput[2]=='\0'){
-                                i=0;
-                                terminal_open = false;
-                            } // fin cas "\c" pour close
 
                             if ((textinput[0]=='\\' && textinput[1]=='s' && textinput[2]=='\0') || (textinput[0]=='\\' && textinput[1]=='s' && textinput[2]=='a' && textinput[3]=='v' && textinput[4]=='e')){
                                 // printf("\\save\n");
@@ -238,6 +234,49 @@ int terminal (SDL_Window* gWindow, SDL_Renderer* gRenderer, TTF_Font* GrandPixel
                                 SDL_FreeSurface(text);
                                 i=0;
                             } // fin "\save"
+
+                            if ((textinput[0]=='\\' && textinput[1]=='l' && textinput[2]=='0' && textinput[3]=='\0') || (textinput[0]=='\\' && textinput[1]=='l' && textinput[2]=='o' && textinput[3]=='a' && textinput[4]=='d' && textinput[5]=='0' && textinput[6]=='\0')) {
+                                printf("\\load 0\n");
+                                saveGame(sauvegarde); // sauvegarder avant de changer de sauvegarde
+                                loadGame(sauvegarde, 0);
+                                *load = true ;
+
+                                text = TTF_RenderText_Solid(GrandPixel,textinput, textColor);
+                                if (text ==NULL ){
+                                    printf("aaaaaaaah :%s\n",SDL_GetError());
+                                    isOpen = false;
+                                }
+                                w = text->w;
+                                h = text->h;
+                                //SDL_SetRenderDrawColor(gRenderer,255,0,0,255);
+                                SDL_Rect dstRect = {10, b-50, w, h};
+                                //SDL_RenderFillRect(gRenderer,&dstRect);
+                                open_terminal(story_progress,gWindow,gRenderer, GrandPixel);
+                                textTexture = SDL_CreateTexture(gRenderer,SDL_PIXELFORMAT_RGBA8888,SDL_TEXTUREACCESS_STATIC,w,h);
+                                SDL_FreeSurface(text);
+                                i=0;
+                            } // fin "\load0"
+                            if ((textinput[0]=='\\' && textinput[1]=='l' && textinput[2]=='1' && textinput[3]=='\0') || (textinput[0]=='\\' && textinput[1]=='l' && textinput[2]=='o' && textinput[3]=='a' && textinput[4]=='d' && textinput[5]=='1' && textinput[6]=='\0')) {
+                                printf("\\load 1\n");
+                                saveGame(sauvegarde); // sauvegarder avant de changer de sauvegarde
+                                loadGame(sauvegarde, 1);
+                                *load = true ;
+
+                                text = TTF_RenderText_Solid(GrandPixel,textinput, textColor);
+                                if (text ==NULL ){
+                                    printf("aaaaaaaah :%s\n",SDL_GetError());
+                                    isOpen = false;
+                                }
+                                w = text->w;
+                                h = text->h;
+                                //SDL_SetRenderDrawColor(gRenderer,255,0,0,255);
+                                SDL_Rect dstRect = {10, b-50, w, h};
+                                //SDL_RenderFillRect(gRenderer,&dstRect);
+                                open_terminal(story_progress,gWindow,gRenderer, GrandPixel);
+                                textTexture = SDL_CreateTexture(gRenderer,SDL_PIXELFORMAT_RGBA8888,SDL_TEXTUREACCESS_STATIC,w,h);
+                                SDL_FreeSurface(text);
+                                i=0;
+                            } // fin "\load1"
 
                             if ((textinput[0]=='\\' && textinput[1]=='m' && textinput[2]=='\0') || (textinput[0]=='\\' && textinput[1]=='m' && textinput[2]=='a' && textinput[3]=='p')) {
                                 // printf("j'ouvre la carte");

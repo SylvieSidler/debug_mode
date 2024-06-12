@@ -16,6 +16,7 @@ int main(void) {
     SDL_Window* pWindow = NULL ;
     SDL_Renderer* pRenderer = NULL ;
     // SDL_Surface *surfaceSprite =NULL;
+
     SDL_Texture* texture = NULL ;
 
     TTF_Font* PTPixel = NULL;
@@ -58,7 +59,7 @@ int main(void) {
         {(larg_fenetre - destRect.w)/4,(haut_fenetre -destRect.h)/4}
     };
 
-    //initialisation des cartes
+    //initialisation des cartes de base
     int*** cartes = initialiser_carte();
     int*** cartesbis = initialiser_carte_bis();
 
@@ -81,8 +82,8 @@ int main(void) {
 
     //initialisation compteur pour qu'A* ne se recalcule pas à chaque déplacement
     int compteur_astar = 10;
-    int compteur_bump = 0;
-    int compteur_tuto_graou = 0;
+    int compteur_bump = 0; // compteur de bump dans murs au niv 1 -> arrivée de Tuto
+    int compteur_tuto_graou = 0; // compteur énervement Tuto
 
     //création variable pour pouvoir debug_mod
     int debug_mod=0;
@@ -102,15 +103,11 @@ int main(void) {
 
     int quit = startMenu(&pWindow, &pRenderer, sauvegarde) ;
     // printf("%d\n", sauvegarde->avancement) ;
-    if (sauvegarde->idCarte!=0) {
-        // printf("%d\n", sauvegarde->idCarte) ;
-        dans_carte = sauvegarde->idCarte ;
-        carte = cartes[dans_carte] ;
-        Kiki->position_x = position_init_carte[dans_carte-1][0] ;
-        Kiki->position_y = position_init_carte[dans_carte-1][1] ;
-    }
+    bool load = false ; // définit si une sauvegardde a été chargée dernièrement -> repassée à false immédiatement après 
+    if (sauvegarde->avancement!=0) { // si aucune sauvegarde n'a été chargée : nouveau jeu avec avancement à 1
+        load = true ;
 
-    int vh ;  
+    int vh ; // variable histoire : temporaire pour sauvegarde->avancement
 
     Mix_PlayMusic(music, -1) ;
     
@@ -119,6 +116,13 @@ int main(void) {
 
     while (quit != 1) {         
         Uint32 frameStart = SDL_GetTicks();
+        if (load == true) {
+            dans_carte = sauvegarde->idCarte ;
+            carte = cartes[dans_carte] ;
+            Kiki->position_x = sauvegarde->x ;
+            Kiki->position_y = sauvegarde->y ;
+            load = false ;
+        }
         while (SDL_PollEvent(&events)) {
             // SDL_Delay(50);
             if (sauvegarde->avancement== 0) { // 1ere cutscene après intro à erreurs SDL
@@ -136,7 +140,9 @@ int main(void) {
                 case SDL_KEYDOWN:
                     switch(events.key.keysym.sym){
                         case SDLK_LSHIFT:
-                            quit = terminal(pWindow, pRenderer, GrandPixel, sauvegarde,&debug_mod,&pouvoir_carte,&compteur_astar) ;
+                            sauvegarde->x = Kiki->position_x;
+                            sauvegarde->y = Kiki->position_y;
+                            quit = terminal(pWindow, pRenderer, GrandPixel, sauvegarde, &debug_mod, &pouvoir_carte, &compteur_astar, &load) ;
                             break;
                     } // fin sym
 
@@ -444,6 +450,8 @@ int main(void) {
     free_chemin(chemin_trouve);
     free_cartes(cartes);
     free_cartes_bis(cartesbis);
+    sauvegarde->x = Kiki->position_x;
+    sauvegarde->y = Kiki->position_y;
     saveGame(sauvegarde) ;
     status = quitALL (pWindow, pRenderer, texture, PTPixel, GrandPixel, music, bumpSound, resolveSound) ;
     return status ; 
