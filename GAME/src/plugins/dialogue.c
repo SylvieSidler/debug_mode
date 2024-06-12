@@ -31,7 +31,7 @@ void cadre(SDL_Window* gWindow, SDL_Renderer* gRenderer){
     // Récupération du cadre
 
     SDL_Surface* cSurface = NULL;
-    cSurface = IMG_Load("img/assets/frame.png");
+    cSurface = IMG_Load("GAME/img/assets/frame.png");
     if (cSurface == NULL){
         printf("[DEBUG] Echec de création de surface de cadre> %s", SDL_GetError());
     }
@@ -95,24 +95,24 @@ void dialogue(char* name, char* expression, char* texte, SDL_Window* gWindow, SD
 
     if  (strcmp(name,"Kiki")==0){
         if (strcmp(expression,"base")==0){
-            portrait_link = "img/portraits/Kiki_base.png";
+            portrait_link = "GAME/img/portraits/Kiki_base.png";
         }
         if (strcmp(expression,"angy")==0){
-            portrait_link = "img/portraits/Kiki_angy.png";
+            portrait_link = "GAME/img/portraits/Kiki_angy.png";
         }
         if (strcmp(expression,"sed")==0){
-            portrait_link = "img/portraits/Kiki_sed.png";
+            portrait_link = "GAME/img/portraits/Kiki_sed.png";
         }
     }
     if  (strcmp(name,"Tutoriel")==0){
         if (strcmp(expression,"base")==0){
-            portrait_link = "img/portraits/Tutoriel_base.png";
+            portrait_link = "GAME/img/portraits/Tutoriel_base.png";
         }
         if (strcmp(expression,"sed")==0){
-            portrait_link = "img/portraits/Tutoriel_sed.png";
+            portrait_link = "GAME/img/portraits/Tutoriel_sed.png";
         }
         if (strcmp(expression,"uwu")==0){
-            portrait_link = "img/portraits/Tutoriel_uwu.png";
+            portrait_link = "GAME/img/portraits/Tutoriel_uwu.png";
         }
     }
 
@@ -279,24 +279,24 @@ void dialogue_prog(char* name, char* expression, char* texte, SDL_Window* gWindo
 
     if  (strcmp(name,"Kiki")==0){
         if (strcmp(expression,"base")==0){
-            portrait_link = "img/portraits/Kiki_base.png";
+            portrait_link = "GAME/img/portraits/Kiki_base.png";
         }
         if (strcmp(expression,"angy")==0){
-            portrait_link = "img/portraits/Kiki_angy.png";
+            portrait_link = "GAME/img/portraits/Kiki_angy.png";
         }
         if (strcmp(expression,"sed")==0){
-            portrait_link = "img/portraits/Kiki_sed.png";
+            portrait_link = "GAME/img/portraits/Kiki_sed.png";
         }
     }
     if  (strcmp(name,"Tutoriel")==0){
         if (strcmp(expression,"base")==0){
-            portrait_link = "img/portraits/Tutoriel_base.png";
+            portrait_link = "GAME/img/portraits/Tutoriel_base.png";
         }
         if (strcmp(expression,"sed")==0){
-            portrait_link = "img/portraits/Tutoriel_sed.png";
+            portrait_link = "GAME/img/portraits/Tutoriel_sed.png";
         }
         if (strcmp(expression,"uwu")==0){
-            portrait_link = "img/portraits/Tutoriel_uwu.png";
+            portrait_link = "GAME/img/portraits/Tutoriel_uwu.png";
         }
     }
 
