@@ -147,8 +147,8 @@ int startMenu(SDL_Window** window, SDL_Renderer** renderer, Save* sauvegarde) { 
         }
         SDL_RenderPresent(*renderer); 
         if (startStep==3 || startStep==2) { // nouveau jeu ou sauvegarde -> sort du menu pour lancer le jeu
-            SDL_Delay(700); // 0.7 sec
-            Mix_FadeOutMusic(700) ;
+            Mix_FadeOutMusic(1000) ;
+            // SDL_Delay(700); // 0.7 sec
             quitStart = 1;
             break;
         }

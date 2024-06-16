@@ -109,7 +109,7 @@ int main(void) {
 
     int vh ; // variable histoire : temporaire pour sauvegarde->avancement
 
-    Mix_PlayMusic(music, -1) ;
+    Mix_FadeInMusic(music, -1, 1500);
     
     int offset =1;
     SDL_Rect spriteRect ; //= {.x = offset*Kiki->SpriteHeight, .y = 0, .w = Kiki->SpriteWidth, .h= Kiki->SpriteHeight};
